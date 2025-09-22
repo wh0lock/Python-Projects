@@ -21,11 +21,10 @@ while keepGoing:
             print(f"You got it in {tries} turns!")
             print("You win!")
             keepGoing = False
-    else:
-        if tries >= 7:
-            print("You should be able to solve this in 7 tries or less.")
-            print(f"You lose! The number was {secret}.")
-            keepGoing = False
+    if tries >= 7:
+        print("You should be able to solve this in 7 tries or less.")
+        print(f"You lose! The number was {secret}.")
+        keepGoing = False
     if correct == False:
         print("That's not a number...")
     
