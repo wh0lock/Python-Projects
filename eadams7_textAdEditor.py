@@ -32,7 +32,7 @@ def main():
         elif menuChoice == "3":
             saveGame()
         elif menuChoice == "4":
-            editNode(defaultGame, currentKey)
+            editNode()
         elif menuChoice == "5":
             playGame()
         else:
@@ -87,27 +87,42 @@ def loadGame():
     print(f"Game loaded successfully")
     return defaultGame
     
-def editField(newNodeName, newContent):
+def editField(newNodeName):
     defaultGame = getDefaultGame()
-    keepGoing = True
-    while keepGoing:
-        if newNodeName == "":
-            keepGoing = False
+    newNodeName = editNode()
+    for currentValue in defaultGame:
+        field = input(defaultGame[newNodeName])
+        if field == "":
+            currentValue = currentValue
         else:
-            newContent = input(defaultGame[newNodeName])
-            newNodeName == newContent 
-    return newContent
+            currentValue = open("defaultGame.json", "a")
+            currentValue.write(newNodeName)
+            json.dump(defaultGame, currentValue, indent=2)
+            currentValue.close()
+            print("saved defaultGame data to defaultGame.json")
 
 def editNode():
     defaultGame = getDefaultGame()
     print(json.dumps(defaultGame, indent = 2))
-    (desc, menuA, nodeA, menuB, nodeB) = newContent
     newNodeName = input("What node would you like to edit or create? ")
-    newDesc = editField("Description", {desc})
-    newMenuA = editField("Menu A", {menuA})
-    newNodeA = editField("Node A", {nodeA})
-    newMenuB = editField("Menu B", {menuB})
-    newNodeB = editField("Node B", {nodeB})
-    defaultGame[newNodeName] = [newDesc, newMenuA, newNodeA, newMenuB, newNodeB]
+    if newNodeName in defaultGame.keys():
+        newContent = defaultGame[newNodeName]
+        (desc, menuA, nodeA, menuB, nodeB) = newContent
+        newDesc = editField({desc})
+        newMenuA = editField({menuA})
+        newNodeA = editField({nodeA})
+        newMenuB = editField({menuB})
+        newNodeB = editField({nodeB})
+        defaultGame[newNodeName] = [newDesc, newMenuA, newNodeA, newMenuB, newNodeB]
+    else:
+        newContent = ["","","","",""]
+        (desc, menuA, nodeA, menuB, nodeB) = newContent
+        newDesc = editField({desc})
+        newMenuA = editField({menuA})
+        newNodeA = editField({nodeA})
+        newMenuB = editField({menuB})
+        newNodeB = editField({nodeB})
+        defaultGame[newNodeName] = [newDesc, newMenuA, newNodeA, newMenuB, newNodeB]
+    return newNodeName
 
 main()
